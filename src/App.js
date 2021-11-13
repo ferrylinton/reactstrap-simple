@@ -1,25 +1,42 @@
-import { Input, Button } from 'reactstrap';
-import { FaRegListAlt, FaCalendarAlt, FaRegSquare, FaRegCheckSquare, FaEdit, FaTrashAlt } from 'react-icons/fa';
 
+import React from 'react';
+import { FaRegListAlt } from 'react-icons/fa';
+
+import { TodoForm } from './components/todo-form/todo-form';
+import { TodoItem } from './components/todo-item/todo-item';
 import './App.scss';
 
+
 function App() {
+
+  const [todo, setTodo] = React.useState("");
+  const [todos, setTodos] = React.useState([
+    {
+      task: "This is a sampe todo",
+      isDone: true
+    },
+    {
+      task: "This is a sampe todo",
+      isDone: false
+    }
+  ]);
+
+  const onTodoFormChange = event => {
+    setTodo(event.target.value);
+    console.log(event.target.value);
+  };
+
+  React.useEffect(() => {
+    console.log(todo);
+  });
+
   return (
     <div className="d-flex flex-column justify-content-center align-items-center min-vh-100">
       <div className="todo-container border border-light shadow-sm p-4">
         <div className="d-flex flex-row justify-content-center">
           <h1 className="mt-3 mb-5"><FaRegListAlt /> <div style={{ padding: 0, margin: 0, display: "inline-block", textTransform: "uppercase" }}>todo</div></h1>
         </div>
-        <div className="d-flex flex-row p-2 border border-light shadow-sm">
-          <Input
-            id="addNewTxt"
-            name="addNewTxt"
-            placeholder="Add new ..."
-            type="text"
-            className="border-0" />
-          <div className="d-inline-block btn text-primary"><FaCalendarAlt /></div>
-          <Button color="primary">ADD</Button>
-        </div>
+        <TodoForm onTodoFormChange={onTodoFormChange} />
         <div className="my-4 border-bottom"></div>
         <div className="d-flex flex-row">
           <div className="input-group mx-2">
@@ -40,32 +57,13 @@ function App() {
           </div>
         </div>
         <div className="my-4">
-          <div className="d-flex flex-row border border-light p-2 fs-4">
-            <div className="d-flex align-items-center p-2 text-secondary"><FaRegSquare /></div>
-            <div className="d-inline-block p-2 flex-grow-1">
-            <div className="ms-2 me-auto">
-                <div className="fw-bold">Beli Odol</div>
-                <div className="fs-6 text-secondary">12/12/2001</div>
-              </div>
-            </div>
-            <div className="d-flex align-items-center flex-row">
-              <div className="d-inline-block p-2 text-secondary"><FaEdit /></div>
-              <div className="d-inline-block p-2 text-danger"><FaTrashAlt /></div>
-            </div>
-          </div>
-          <div className="d-flex flex-row border border-light p-2 fs-4">
-            <div className="d-flex align-items-center p-2 text-success"><FaRegCheckSquare /></div>
-            <div className="d-inline-block p-2 flex-grow-1">
-            <div className="ms-2 me-auto">
-                <div className="fw-bold">Beli Odol</div>
-                <div className="fs-6 text-secondary">12/12/2001</div>
-              </div>
-            </div>
-            <div className="d-flex align-items-center flex-row">
-              <div className="d-inline-block p-2 text-secondary"><FaEdit /></div>
-              <div className="d-inline-block p-2 text-danger"><FaTrashAlt /></div>
-            </div>
-          </div>
+          {todos.map((todo, index) => (
+            <TodoItem
+              key={index}
+              index={index}
+              todo={todo}
+            />
+          ))}
         </div>
       </div>
     </div>
